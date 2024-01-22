@@ -120,7 +120,7 @@ export const UserDashboard = () => {
                     </Grid.Column>
                 </Grid.Row>
                 <Divider />
-               { /*<Grid.Row>
+               <Grid.Row>
                     <Grid.Column>
                         <Header size="large" content="Features" />
                     </Grid.Column>
@@ -174,7 +174,7 @@ export const UserDashboard = () => {
                            
                         
                     </Grid.Column>
-                </Grid.Row> */}
+                </Grid.Row> 
                 
             </Grid>
                

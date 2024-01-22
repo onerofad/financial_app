@@ -105,9 +105,9 @@ export const UserDashboard = () => {
                                 </Table.Header>
                                 <Table.Body>
                                     <Table.Row>
-                                        <Table.Cell>{accountname}</Table.Cell>
-                                        <Table.Cell>{accountype}</Table.Cell>
-                                        <Table.Cell>{accountnumber}</Table.Cell>
+                                        <Table.Cell style={{fontSize: '0.5em'}}>{accountname}</Table.Cell>
+                                        <Table.Cell style={{fontSize: '0.5em'}}>{accountype}</Table.Cell>
+                                        <Table.Cell style={{fontSize: '0.5em'}}>{accountnumber}</Table.Cell>
                                     </Table.Row>
                                 </Table.Body>
 

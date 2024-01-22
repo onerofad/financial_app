@@ -60,7 +60,7 @@ export const UserDashboard = () => {
         <UserNavbar />
         <Segment vertical style={{padding: '3em 0em', backgroundColor: '#f6f6f6'}}>
         <Container>
-            <Grid divided stackable>
+            <Grid stackable>
                 <Grid.Row>
                     <Grid.Column width={8}>
                     <Segment raised size="big">

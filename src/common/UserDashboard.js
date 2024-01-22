@@ -117,19 +117,25 @@ export const UserDashboard = () => {
                     </Grid>
                 </Segment>
 
-                    </Grid.Column>
+                </Grid.Column>
                 </Grid.Row>
-                <Divider />
-               <Grid.Row>
+                
+            </Grid>
+               
+        </Container>
+        </Segment>
+        <Segment vertical style={{padding: '2em 0em', backgroundColor: '#f6f6f6'}}>
+            <Container>
+            <Grid>
+                <Grid.Row>
                     <Grid.Column>
                         <Header size="large" content="Features" />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column>
-                      
-                            <Grid stackable>
-                                <Grid.Row>
+              
+                            <Grid>
                                     <Grid.Column computer={4} mobile={8} textAlign="center">
                                         <Segment onClick={() => dispatch({type: 'account_setting', size_account_setting: 'mini'})} tertiary raised inverted color="green" secondary >
                                             <Header as="h3" icon>
@@ -166,19 +172,16 @@ export const UserDashboard = () => {
                                         </Segment>
                                         
                                     </Grid.Column>
-                                   
-                                   
-                                </Grid.Row>
-                             
+                                                                
                             </Grid>
                            
                         
                     </Grid.Column>
                 </Grid.Row> 
-                
-            </Grid>
-               
-        </Container>
+                </Grid>
+            </Container>
+        
+        
         <SendMoneyModal open={open} size={size} close={closeModal} />
         <AccountSetting open={open_account_setting} size={size_account_setting} close={closeModal} />
         </Segment>

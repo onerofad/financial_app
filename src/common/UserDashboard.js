@@ -93,13 +93,13 @@ export const UserDashboard = () => {
                                 <Table.Header>
                                     <Table.Row>
                                         <Table.HeaderCell>
-                                            Account Name
+                                             Name
                                         </Table.HeaderCell>
                                         <Table.HeaderCell>
-                                            Account Type
+                                             Type
                                         </Table.HeaderCell>
                                         <Table.HeaderCell>
-                                            Account Number
+                                             Number
                                         </Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>

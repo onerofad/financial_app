@@ -15,6 +15,7 @@ import { ContactMobile } from './mobile/ContactMobile';
 import { Login } from './desktop/Login';
 import { Register } from './desktop/Register';
 import { UserDashboard } from './common/UserDashboard';
+import { LocalTransfer } from './common/LocalTransfer';
 
 function App() {
   const {MediaContextProvider, Media} = createMedia({
@@ -53,6 +54,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/user-dashboard' element={<UserDashboard />} />
+            <Route path='/local' element={<LocalTransfer />} />
           </Routes>
         </BrowserRouter>
 

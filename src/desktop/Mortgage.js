@@ -1,6 +1,7 @@
 import { Container, Grid, Header, Segment, Image, Icon } from "semantic-ui-react"
 import { Footer } from "./Footer"
 import { Navbar } from "./Navbar"
+import { GetAccount } from "./GetAccount"
 
 export const Mortgage = () => {
 
@@ -62,6 +63,7 @@ export const Mortgage = () => {
                 </Grid>
             </Container>
         </Segment>
+        <GetAccount />
         <Footer />
         </>
     )

@@ -3,6 +3,7 @@ import { Navbar } from "./Navbar"
 import './style.css'
 import { Footer } from "./Footer"
 import { useNavigate } from "react-router-dom"
+import { GetAccount } from "./GetAccount"
 
 export const Home = ({mobile}) => {
     const navigate = useNavigate()
@@ -319,7 +320,7 @@ export const Home = ({mobile}) => {
                 </Container>
 
              </Segment>
-             
+             <GetAccount />
              <Footer />
              
         </>

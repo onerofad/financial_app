@@ -1,6 +1,7 @@
 import { Container, Grid, Header, Segment, Image } from "semantic-ui-react"
 import { Footer } from "./Footer"
 import { Navbar } from "./Navbar"
+import { GetAccount } from "./GetAccount"
 
 export const Business = () => {
 
@@ -61,6 +62,7 @@ export const Business = () => {
                 </Grid>
             </Container>
         </Segment>
+        <GetAccount />
         <Footer />
         </>
     )

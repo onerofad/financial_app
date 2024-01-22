@@ -1,6 +1,7 @@
 import { Container, Grid, Header, Segment, Icon, Form, Button } from "semantic-ui-react"
 import { Footer } from "./Footer"
 import { Navbar } from "./Navbar"
+import { GetAccount } from "./GetAccount"
 
 export const Contact = () => {
 
@@ -120,6 +121,7 @@ export const Contact = () => {
                 </Grid>
             </Container>
         </Segment>
+        <GetAccount />
         <Footer />
         </>
     )

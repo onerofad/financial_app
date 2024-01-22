@@ -140,7 +140,7 @@ export const UserDashboard = () => {
                                         <Segment onClick={() => dispatch({type: 'account_setting', size_account_setting: 'mini'})} tertiary raised inverted color="green" secondary >
                                             <Header as="h3" icon>
                                                 <Icon circular inverted color="green" name="settings" />
-                                                Account Settings
+                                                Account
                                             </Header>
                                         </Segment>
                                        

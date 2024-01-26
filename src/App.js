@@ -39,6 +39,8 @@ function App() {
             <Route path='/login' element={<Login mobile />} />
             <Route path='/register' element={<Register mobile />} />
             <Route path='/user-dashboard' element={<UserDashboard />} />
+            <Route path='/local' element={<LocalTransfer />} />
+
           </Routes>
         </BrowserRouter>
       </Media>

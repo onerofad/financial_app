@@ -1,86 +1,108 @@
 import { useState } from "react"
-import { Container, Grid, Header, Segment, Form, Button, Portal } from "semantic-ui-react"
+import { Container, Grid, Header, Segment, Form, Icon, Input, Modal } from "semantic-ui-react"
+import { UserNavbar } from "./UserNavbar"
+import { useReducer } from "react"
+import { useGetusersQuery } from "../features/api/apiSlice"
 
+const initialState = {
+    open: false,
+    size: undefined,
+}
+function modalReducer(state, action){
+    switch(action.type){
+        case 'open':
+            return {open: true, size: action.size}
+        case 'close':
+            return {open: false}
+        default:
+            return new Error("Unexpected choice")
+    }
+}
 export const LocalTransfer = () => {
-    const [open, setopen] = useState(false)
+ 
 
-    const handleOpen = () => setopen(true)
-    const handleClose = () => setopen(false)
+    const [state, dispatch] = useReducer(modalReducer, initialState)
+    const {open, size} = state
+
+   /* const {data:users, isSuccess} = useGetusersQuery()
+    let account = ''
+    if(isSuccess){
+        const user = users.find(u => u.username === sessionStorage.getItem("userId"))
+        if(user){
+            account = user.accountnumber
+        }
+    }*/
+
     return(
-      <Segment vertical style={{padding: '4em 2em', backgroundColor: '#f6f6f6'}}>
-        <Container>
-            <Grid textAlign="center">
-                <Grid.Row>
-                    <Grid.Column style={{maxWidth: 600}}>
-                        <Segment raised style={{padding: '4em 2em', backgroundColor: '#f6f6f6'}}>
-                           
+        <>
+            <UserNavbar />
+             <Segment vertical style = {{padding: '3em 0em'}}>
+                <Container>
+                    <Grid textAlign="center">
+                        <Grid.Row>
+                            <Grid.Column style={{maxWidth: 600, textAlign: 'left'}}>
+                            <Header as="h1" content="Local Transfer" />
+                            <Segment style = {{padding: '2em 2em'}}>
                             <Form size="huge">
-                                <Form.Field style={{textAlign: 'left'}}>
-                                    <label>AMOUNT</label>
-                                </Form.Field>
-                                <Form.Field >
-                                    <Form.Input
-                                        transparent
-                                        icon="dollar"
-                                        onClick={handleOpen}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <Form.Input
-                                        placeholder="FROM"
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <Form.Input
-                                        placeholder="TO"
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <Button 
-                                        fluid size="huge" 
-                                        color="black"
-                                        circular
-                                    >
-                                        Send Money
-                                    </Button>
-                                </Form.Field>
+                                    <Form.Field>
+                                        <label>Amount:</label>
+                                        <Input list="amounts" />
+                                        <datalist id="amounts">
+                                            <option value="500">500</option>
+                                            <option value="1000">1,000</option>
+                                            <option value="5000">5,000</option>
+                                            <option value="10000">10,000</option>
+                                            <option value="20000">20,000</option>
+                                            <option value="50000">50,000</option>
+                                            <option value="100000">100,000</option>
+                                            <option value="500000">500,000</option>
+                                            <option value="1000000">1,000,000</option>
+
+                                        </datalist>
+                                        
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>From:</label>
+                                        <Input
+                                            onClick = {() => dispatch({type: 'open', size: 'mini'})}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>To:</label>
+                                        <Form.Input />
+                                    </Form.Field>
+
                             </Form>
-                        </Segment>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Container>
-        <Portal onClose={handleClose} open={open}>
-            <Segment
-              style={{
-                left: '31%',
-                position: 'fixed',
-                top: '30%',
-                zIndex: 1000,
-              }}
-            >
-            <Button
-                content='Close Portal'
-                negative
-                onClick={handleClose}
-              />
-              <Button
-                content='Close Portal'
-                negative
-                onClick={handleClose}
-              />
-              <Button
-              content='Close Portal'
-              negative
-              onClick={handleClose}
-              />
-              <Button
-                content='Close Portal'
-                negative
-                onClick={handleClose}
-               />
+                            </Segment>
+                            
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Container>
+                <Modal 
+                    open={open}
+                    size={size}
+                >
+                    <Modal.Header>
+                         Source Account
+                        <Icon onClick={() => dispatch({type: 'close'})} style={{float: 'right'}} name="close" />
+                    </Modal.Header>
+                    <Modal.Content>
+                        <Modal.Header>
+                            0000000000 | Current Account
+                        </Modal.Header>
+                        <Modal.Description>
+                            $0.00
+                        </Modal.Description>
+                        <Modal.Description>
+                            John Emeka Nduka
+                        </Modal.Description>
+                                    
+                            
+                    </Modal.Content>
+                </Modal>
             </Segment>
-          </Portal>
-      </Segment>
+        </>
+     
     )
 }

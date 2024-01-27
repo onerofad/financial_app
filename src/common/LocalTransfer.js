@@ -55,7 +55,7 @@ export const LocalTransfer = () => {
                     <Grid textAlign="center">
                         <Grid.Row>
                             <Grid.Column style={{textAlign: 'center', maxWidth: 600, textAlign: 'left'}}>
-                            <Segment inverted tertiary raised secondary color="green" style = {{padding: '2em 4em'}}>
+                            <Segment inverted tertiary raised secondary color="green" style = {{padding: '2em 2em'}}>
                             <Header textAlign="center" icon as="h2" >
                                 <Icon circular inverted color="green" name="money bill alternate outline" />
                                 Local Transfer

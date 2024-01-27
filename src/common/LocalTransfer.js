@@ -102,11 +102,9 @@ export const LocalTransfer = () => {
                     </Modal.Header>
                     <Modal.Content>
                         <p style={{fontSize: '1.2em'}}>
-                             0000000000 | Current Account
-                            <p style={{fontSize: '1.1em'}}>
-                                $0.00 <br/>
-                                John Emeka Nduka
-                            </p>
+                             0000000000 | Current Account<br/>
+                             $0.00 <br/>
+                             John Emeka Nduka
                         </p>
                         
                                     

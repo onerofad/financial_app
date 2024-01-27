@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Container, Grid, Header, Segment, Form, Icon, Input, Modal } from "semantic-ui-react"
+import { Container, Grid, Header, Segment, Form, Icon, Input, Modal, Button } from "semantic-ui-react"
 import { UserNavbar } from "./UserNavbar"
 import { useReducer } from "react"
 import { useGetusersQuery } from "../features/api/apiSlice"
@@ -36,13 +36,17 @@ export const LocalTransfer = () => {
     return(
         <>
             <UserNavbar />
-             <Segment vertical style = {{padding: '3em 0em'}}>
+             <Segment vertical style = {{padding: '3em 0em', backgroundColor: '#F6F6F6'}}>
                 <Container>
                     <Grid textAlign="center">
                         <Grid.Row>
-                            <Grid.Column style={{maxWidth: 600, textAlign: 'left'}}>
-                            <Header as="h1" content="Local Transfer" />
-                            <Segment style = {{padding: '2em 2em'}}>
+                            <Grid.Column style={{textAlign: 'center', maxWidth: 600, textAlign: 'left'}}>
+                            <Segment inverted tertiary raised secondary color="green" style = {{padding: '2em 2em'}}>
+                            <Header textAlign="center" icon as="h2" >
+                                <Icon circular inverted color="green" name="money bill alternate outline" />
+                                Local Transfer
+                            </Header>
+
                             <Form size="huge">
                                     <Form.Field>
                                         <label>Amount:</label>
@@ -70,6 +74,15 @@ export const LocalTransfer = () => {
                                     <Form.Field>
                                         <label>To:</label>
                                         <Form.Input />
+                                    </Form.Field>
+                                    <Form.Field style={{textAlign: 'center'}}>
+                                        <Button
+                                         color="green"
+                                         size="massive"
+                                         circular
+                                        >
+                                            Send Money
+                                        </Button>
                                     </Form.Field>
 
                             </Form>

@@ -49,7 +49,7 @@ export const DestinationModal = ({open, size, close}) => {
     const searchAccount = (e) => {
         setacctnum(e.target.value)
         const user = useraccount.find(u => u.accountnumber === acctnum)
-        if(user){
+        if(user && acctnum.length === 10){
             setcontinue_btn(true)
             setfname(user.fname)
             setlname(user.lname)
@@ -126,7 +126,6 @@ export const DestinationModal = ({open, size, close}) => {
                 <br/>
                 {continue_btn ?
                 <>
-
                     <Segment>
                         <span>{fname}</span><span>{lname}</span> <br/>
                         {accountno} | Swift
@@ -136,13 +135,17 @@ export const DestinationModal = ({open, size, close}) => {
                     <Button size="large" circular style={{textAlign: 'left'}} color="black">
                         Yes Continue
                     </Button>
-                    <Button size="large" circular style={{textAlign: 'left'}} color="youtube">
-                        No
+                    <Button 
+                        size="large" 
+                        circular style={{textAlign: 'left'}} 
+                        color="youtube"
+                        onClick={() => dispatch({type: 'close'})}
+                    >
+                        Cancel
                     </Button>
-                </>
-                  
-                    :                
-                    ''
+                </>     
+                :                
+                ''
                 }
                
             </Modal.Content>

@@ -1,19 +1,27 @@
 import { useState } from "react"
-import { Container, Grid, Header, Segment, Form, Icon, Input, Modal, Button, Checkbox } from "semantic-ui-react"
+import { Container, Grid, Header, Segment, Form, Icon, Input, Modal, Button, Checkbox, List, Table, Accordion } from "semantic-ui-react"
 import { UserNavbar } from "./UserNavbar"
 import { useReducer } from "react"
 import { useGetusersQuery } from "../features/api/apiSlice"
+import { DestinationModal } from "./DestinationModal"
 
 const initialState = {
     open: false,
     size: undefined,
+    open_destination: false,
+    size_destination: undefined
 }
 function modalReducer(state, action){
     switch(action.type){
         case 'open':
             return {open: true, size: action.size}
+
+        case 'open_destination':
+            return {open_destination: true, size_destination: action.size_destination}
+          
         case 'close':
-            return {open: false}
+            return {open: false, open_destination: false}
+
         default:
             return new Error("Unexpected choice")
     }
@@ -22,7 +30,7 @@ export const LocalTransfer = () => {
  
 
     const [state, dispatch] = useReducer(modalReducer, initialState)
-    const {open, size} = state
+    const {open, size, open_destination, size_destination} = state
 
     const [accountInfo, setaccountInfo] = useState('')
 
@@ -46,6 +54,9 @@ export const LocalTransfer = () => {
         setaccountInfo(account)
         dispatch({type: 'close'})
     }
+    const closeModal = () => {
+        dispatch({type: 'close'})
+    }  
 
     return(
         <>
@@ -88,7 +99,9 @@ export const LocalTransfer = () => {
                                     </Form.Field>
                                     <Form.Field>
                                         <label>To:</label>
-                                        <Form.Input />
+                                        <Input 
+                                            onClick = {() => dispatch({type: 'open_destination', size_destination: 'tiny'})}
+                                        />
                                     </Form.Field>
                                     <Form.Field style={{textAlign: 'center'}}>
                                         <Button
@@ -138,6 +151,11 @@ export const LocalTransfer = () => {
                             
                     </Modal.Content>
                 </Modal>
+               <DestinationModal
+                    open={open_destination}
+                    size={size_destination}
+                    close={() =>closeModal()}
+               />
             </Segment>
         </>
      

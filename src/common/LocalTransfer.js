@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Container, Grid, Header, Segment, Form, Icon, Input, Modal, Button } from "semantic-ui-react"
+import { Container, Grid, Header, Segment, Form, Icon, Input, Modal, Button, Checkbox } from "semantic-ui-react"
 import { UserNavbar } from "./UserNavbar"
 import { useReducer } from "react"
 import { useGetusersQuery } from "../features/api/apiSlice"
@@ -24,14 +24,28 @@ export const LocalTransfer = () => {
     const [state, dispatch] = useReducer(modalReducer, initialState)
     const {open, size} = state
 
-   /* const {data:users, isSuccess} = useGetusersQuery()
+    const [accountInfo, setaccountInfo] = useState('')
+
+    const {data:users, isSuccess} = useGetusersQuery()
     let account = ''
+    let accounttype =''
+    let accountbal = ''
+    let fname = ''
+    let lname = ''
     if(isSuccess){
-        const user = users.find(u => u.username === sessionStorage.getItem("userId"))
+        const user = users.find(u => u.email === sessionStorage.getItem("emailId"))
         if(user){
             account = user.accountnumber
+            accounttype = user.accountype
+            accountbal  = user.accountbal
+            fname = user.fname
+            lname = user.lname
         }
-    }*/
+    }
+    const addAccount = () => {
+        setaccountInfo(account)
+        dispatch({type: 'close'})
+    }
 
     return(
         <>
@@ -41,7 +55,7 @@ export const LocalTransfer = () => {
                     <Grid textAlign="center">
                         <Grid.Row>
                             <Grid.Column style={{textAlign: 'center', maxWidth: 600, textAlign: 'left'}}>
-                            <Segment inverted tertiary raised secondary color="green" style = {{padding: '2em 2em'}}>
+                            <Segment inverted tertiary raised secondary color="green" style = {{padding: '2em 4em'}}>
                             <Header textAlign="center" icon as="h2" >
                                 <Icon circular inverted color="green" name="money bill alternate outline" />
                                 Local Transfer
@@ -69,6 +83,7 @@ export const LocalTransfer = () => {
                                         <label>From:</label>
                                         <Input
                                             onClick = {() => dispatch({type: 'open', size: 'mini'})}
+                                            value={accountInfo}
                                         />
                                     </Form.Field>
                                     <Form.Field>
@@ -101,13 +116,25 @@ export const LocalTransfer = () => {
                         <Icon onClick={() => dispatch({type: 'close'})} style={{float: 'right'}} name="close" />
                     </Modal.Header>
                     <Modal.Content>
-                        <p style={{fontSize: '1.2em'}}>
-                             0000000000 | Current Account<br/>
-                             $0.00 <br/>
-                             John Emeka Nduka
-                        </p>
-                        
-                                    
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={12}>
+                                <p style={{fontSize: '1.2em'}}>
+                                    {account} | {accounttype} <br/>
+                                    ${accountbal} <br/>
+                                    {fname + ' '} {lname}
+                                </p>
+                            </Grid.Column>
+                            <Grid.Column width={4}>
+                                <Button 
+                                    color="green"
+                                    onClick={() => addAccount()}
+                                >
+                                    Add
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>    
                             
                     </Modal.Content>
                 </Modal>

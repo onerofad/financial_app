@@ -19,11 +19,13 @@ export const Login = ({mobile}) => {
     const handlepasswordChange = e => setpassword(e.target.value)
 
     const {data: users, isSuccess} = useGetusersQuery()
-    let count = 0
+    let count = 0 
+    let email = ''
     if(isSuccess){
         users.map(user => {
             if(user.username === username && user.password === password){
                 ++count
+                email = user.email
             }
         })
     }
@@ -38,6 +40,7 @@ export const Login = ({mobile}) => {
             setloading(true)
             setTimeout(() => {
                 sessionStorage.setItem("userId", username)
+                sessionStorage.setItem("emailId", email)
                 navigate("/user-dashboard")
             }, 300)
         }

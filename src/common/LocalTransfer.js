@@ -101,15 +101,14 @@ export const LocalTransfer = () => {
                         <Icon onClick={() => dispatch({type: 'close'})} style={{float: 'right'}} name="close" />
                     </Modal.Header>
                     <Modal.Content>
-                        <Modal.Header>
-                            0000000000 | Current Account
-                        </Modal.Header>
-                        <Modal.Description>
-                            $0.00
-                        </Modal.Description>
-                        <Modal.Description>
-                            John Emeka Nduka
-                        </Modal.Description>
+                        <p style={{fontSize: '1.2em'}}>
+                             0000000000 | Current Account
+                            <p style={{fontSize: '1.1em'}}>
+                                $0.00 <br/>
+                                John Emeka Nduka
+                            </p>
+                        </p>
+                        
                                     
                             
                     </Modal.Content>

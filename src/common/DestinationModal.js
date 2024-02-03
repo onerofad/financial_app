@@ -1,10 +1,13 @@
-import { useReducer, useState } from "react"
-import { Modal, Header, Accordion, Icon, List, Input, Button, Segment } from "semantic-ui-react"
+import { useEffect, useReducer, useState } from "react"
+import { Modal, Form, Header, Accordion, Icon, List, Input, Button, Segment, TextArea, Checkbox } from "semantic-ui-react"
 import { useGetusersQuery } from "../features/api/apiSlice"
+import { useDispatch } from "react-redux"
+import { updateToAccount } from "../features/api/accountSlice"
 
 const initialState = {
     open_new_beneficiary: false,
     size_new_beneficiary: undefined,
+
 }
 
 function modalReducer(state, action){
@@ -19,15 +22,26 @@ function modalReducer(state, action){
 }
 export const DestinationModal = ({open, size, close}) => {
 
+    useEffect(() => {
+        searchAccount()
+    })
     const [acctnum, setacctnum] = useState('')
     const [continue_btn, setcontinue_btn] = useState(false)
     const [fname, setfname] = useState('')
     const [lname, setlname] = useState('')
     const [accountno, setaccountno] = useState('')
+    const [loading, setloading] = useState(false)
 
+    const dispatch_reducer = useDispatch()
+
+    const handleAccountChange = e => setacctnum(e.target.value)
 
     const [state, dispatch] = useReducer(modalReducer, initialState)
-    const {open_new_beneficiary, size_new_beneficiary} = state
+    const {open_new_beneficiary, 
+            size_new_beneficiary,
+            open_new_beneficiary_to,
+            size_new_beneficiary_to} = state
+
     const new_beneficiary = () => {
         close()
         dispatch({type: 'open', size_new_beneficiary: 'mini'})
@@ -46,17 +60,26 @@ export const DestinationModal = ({open, size, close}) => {
             }
         ))
     }
-    const searchAccount = (e) => {
-        setacctnum(e.target.value)
-        const user = useraccount.find(u => u.accountnumber === acctnum)
-        if(user && acctnum.length === 10){
-            setcontinue_btn(true)
-            setfname(user.fname)
-            setlname(user.lname)
-            setaccountno(user.accountnumber)
-            setacctnum('')
-        }else{
-            setcontinue_btn(false)
+    let acct = ''
+    const searchAccount = () => {
+        acct = acctnum
+        if(acct.length === 10){
+            setloading(true)
+            //setdisabled(true)
+            setTimeout(() => {
+                const user = useraccount.find(u => u.accountnumber === acct)
+                if(user){
+                    setcontinue_btn(true)
+                    setfname(user.fname)
+                    setlname(user.lname)
+                    setaccountno(user.accountnumber)
+                    //setacctnum('')
+                    setloading(false)
+                }else{
+                    setcontinue_btn(false)
+                    setloading(false)
+                }
+            }, 300)  
         }
        
     }
@@ -87,6 +110,12 @@ export const DestinationModal = ({open, size, close}) => {
         }
 
     ]
+    const populateaccount = () => {
+        dispatch_reducer(updateToAccount(
+            acctnum
+        ))
+        dispatch({type: 'close'})
+    }
     return(
         <>
             <Modal
@@ -120,8 +149,10 @@ export const DestinationModal = ({open, size, close}) => {
                 <Input
                     size="large"
                     placeholder="Account Number"
+                    value={acctnum}
                     fluid
-                    onChange={searchAccount}
+                    loading={loading}
+                    onChange={handleAccountChange}
                 />
                 <br/>
                 {continue_btn ?
@@ -130,9 +161,15 @@ export const DestinationModal = ({open, size, close}) => {
                         <span>{fname}</span><span>{lname}</span> <br/>
                         {accountno} | Swift
                     </Segment>
-                    <br/>
+                    
+                  
                     <Header textAlign="left" as="h3" content="Is this the person?" />
-                    <Button size="large" circular style={{textAlign: 'left'}} color="black">
+                    <Button 
+                        size="large" 
+                        circular 
+                        style={{textAlign: 'left'}} color="black"
+                        onClick={() => populateaccount()}
+                    >
                         Yes Continue
                     </Button>
                     <Button 
@@ -149,6 +186,14 @@ export const DestinationModal = ({open, size, close}) => {
                 }
                
             </Modal.Content>
+        </Modal>
+        <Modal
+            open={open_new_beneficiary_to}
+            size={size_new_beneficiary_to}
+        >
+            <Modal.Header>
+                Destination To
+            </Modal.Header>
         </Modal>
         
         </>

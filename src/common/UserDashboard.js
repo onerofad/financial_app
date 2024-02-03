@@ -146,9 +146,9 @@ export const UserDashboard = () => {
                                        
                                     </Grid.Column>
                                     <Grid.Column computer={4} mobile={8} textAlign="center">
-                                        <Segment tertiary raised inverted color="green" secondary>
+                                        <Segment onClick={() => dispatch({type: 'open', size: 'mini'})} tertiary raised inverted color="green" secondary>
                                             <Header as="h3" icon>
-                                                <Icon onClick={() => dispatch({type: 'open', size: 'mini'})} circular inverted color="green" name="money bill" />
+                                                <Icon  circular inverted color="green" name="money bill" />
                                                 Send money
                                             </Header>
                                         </Segment>

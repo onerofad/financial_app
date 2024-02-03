@@ -16,11 +16,19 @@ export const apiSlice = createApi({
         }),
         getusers: builder.query({
             query: () => 'users'
+        }),
+        localTransfer: builder.mutation({
+            query: initialPost => ({
+                url: 'localtransfers/',
+                method: 'POST',
+                body: initialPost
+            })
         })
     })
 })
 
 export const {
             useRegisterMutation,
-            useGetusersQuery
+            useGetusersQuery,
+            useLocalTransferMutation
         } = apiSlice

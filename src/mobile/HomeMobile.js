@@ -32,7 +32,7 @@ export const HomeMobile = () => {
             <Segment vertical style={{padding: '3em 1em'}}>
                     <Grid>
                         <Grid.Row>
-                            <Grid.Column>
+                            <Grid.Column mobile={8}>
                                 <Segment>
                                     <Grid textAlign="center">
                                         <Grid.Row>
@@ -48,10 +48,7 @@ export const HomeMobile = () => {
                                     
                                 </Segment>
                             </Grid.Column>
-                           
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
+                            <Grid.Column mobile={8}>
                                 <Segment>
                                     <Grid textAlign="center">
                                         <Grid.Row>
@@ -69,8 +66,9 @@ export const HomeMobile = () => {
                             </Grid.Column>
                            
                         </Grid.Row>
+                        
                         <Grid.Row>
-                            <Grid.Column>
+                            <Grid.Column mobile={8}>
                                 <Segment>
                                     <Grid textAlign="center">
                                         <Grid.Row>
@@ -86,10 +84,7 @@ export const HomeMobile = () => {
                                     
                                 </Segment>
                             </Grid.Column>
-                           
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
+                            <Grid.Column mobile={8}>
                                 <Segment>
                                     <Grid textAlign="center">
                                         <Grid.Row>
@@ -104,9 +99,8 @@ export const HomeMobile = () => {
                                     </Grid>
                                     
                                 </Segment>
-                            </Grid.Column>
-                           
-                        </Grid.Row>
+                            </Grid.Column>                     
+                        </Grid.Row>                     
                     </Grid>
              </Segment>
              <Segment vertical style={{padding: '3em 1em'}}>

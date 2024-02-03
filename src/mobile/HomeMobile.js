@@ -91,7 +91,7 @@ export const HomeMobile = () => {
                                             <Grid.Column>
                                                 <Icon size="big" name="phone" color="green" />
                                                 <p>
-                                                    <span style={{fontSize: '1.5em'}}>24/7 help line</span><br/>
+                                                    <span style={{fontSize: '1.5em'}}>24/7 help</span><br/>
                                                     Always available
                                                 </p>
                                             </Grid.Column>

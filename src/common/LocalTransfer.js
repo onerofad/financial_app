@@ -76,7 +76,7 @@ export const LocalTransfer = () => {
     }  
 
     const [addtransaction, {isLoading}] = useLocalTransferMutation()
-    const saveTransaction = [account, accounttype, accountbal, fname, lname, accountNo, remark].every(Boolean) && !isLoading
+    const saveTransaction = [amount, account, accounttype, accountbal, fname, lname, accountNo, remark].every(Boolean) && !isLoading
    
     const sendMoney = async () => {
         if(accountInformation === ''){

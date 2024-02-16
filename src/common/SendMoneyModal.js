@@ -17,7 +17,11 @@ export const SendMoneyModal = ({open, size, close}) => {
             open={open}
             size={size}
         >
-            <Modal.Header>Send Money</Modal.Header>
+            <Modal.Header>
+                Send Money
+                <Icon style={{float: 'right'}} name="close"  onClick={() => close()} />
+
+            </Modal.Header>
             <Modal.Content>
                 <Grid textAlign="center">
                     <Grid.Row>
@@ -38,17 +42,6 @@ export const SendMoneyModal = ({open, size, close}) => {
                                 label="Foreign Transfer"
 
                             />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column textAlign="center">
-                            <Button 
-                                size="small"
-                                color="youtube"
-                                onClick={() => close()}
-                            >
-                                Cancel
-                            </Button>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

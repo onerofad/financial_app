@@ -1,21 +1,26 @@
 import { useEffect, useReducer, useState } from "react"
 import { Modal, Form, Header, Accordion, Icon, List, Input, Button, Segment, TextArea, Checkbox } from "semantic-ui-react"
-import { useGetusersQuery } from "../features/api/apiSlice"
+import { useGetusersQuery, useSaveAccountMutation } from "../features/api/apiSlice"
 import { useDispatch } from "react-redux"
-import { updateToAccount } from "../features/api/accountSlice"
+import { saveBeneficiaryAccount, updateToAccount } from "../features/api/accountSlice"
+import { SavedAccounts } from "./SavedAccounts"
 
 const initialState = {
     open_new_beneficiary: false,
     size_new_beneficiary: undefined,
+    open_saved_account: false,
+    size_saved_account: undefined
 
 }
 
 function modalReducer(state, action){
     switch(action.type){
         case 'open':
-            return {open_new_beneficiary: true, size_new_beneficiary: action.size_new_beneficiary}
+            return {open_new_beneficiary: true, size_new_beneficiary: action.size_new_beneficiary}    
+        case 'open_saved_account':
+            return {open_saved_account: true, size_saved_account: action.size_saved_account}
         case 'close':
-            return {open_new_beneficiary: false}
+            return {open_new_beneficiary: false, open_saved_account: false}
         default:
             return new Error("Unexpected Error")
     }
@@ -31,6 +36,8 @@ export const DestinationModal = ({open, size, close}) => {
     const [lname, setlname] = useState('')
     const [accountno, setaccountno] = useState('')
     const [loading, setloading] = useState(false)
+    const [acctId, setacctId] = useState('')
+    const [accountbal, setaccountbal] = useState('')
 
     const dispatch_reducer = useDispatch()
 
@@ -40,22 +47,33 @@ export const DestinationModal = ({open, size, close}) => {
     const {open_new_beneficiary, 
             size_new_beneficiary,
             open_new_beneficiary_to,
-            size_new_beneficiary_to} = state
+            size_new_beneficiary_to,
+            open_saved_account,
+            size_saved_account} = state
 
     const new_beneficiary = () => {
         close()
         dispatch({type: 'open', size_new_beneficiary: 'mini'})
     }
+
+    const new_saved_account = () => {
+        close()
+        dispatch({type: 'open_saved_account', size_saved_account: 'mini'})
+    }
+
+    const [saveAccount, setSaveAccount] = useState(false)
+
     const {data:users, isSuccess} = useGetusersQuery()
     let useraccount
 
     if(isSuccess){
         useraccount = users.map(usr => (
             {
-                'key': usr.id, 
+                'id': usr.id, 
                 'accountnumber': usr.accountnumber,
                 'fname': usr.fname,
-                'lname': usr.lname
+                'lname': usr.lname,
+                'accountbal': usr.accountbal
 
             }
         ))
@@ -73,6 +91,8 @@ export const DestinationModal = ({open, size, close}) => {
                     setfname(user.fname)
                     setlname(user.lname)
                     setaccountno(user.accountnumber)
+                    setacctId(user.id)
+                    setaccountbal(user.accountbal)
                     //setacctnum('')
                     setloading(false)
                 }else{
@@ -96,7 +116,7 @@ export const DestinationModal = ({open, size, close}) => {
                     </Header> 
                     <List relaxed verticalAlign="middle" divided>
                         <List.Item style={{color: 'black'}} as="a" onClick={() => new_beneficiary()}>New Beneficiary</List.Item>
-                        <List.Item style={{color: 'black'}} as="a" onClick={() => alert("Saved Beneficiary") }>Saved Beneficiary</List.Item>
+                        <List.Item style={{color: 'black'}} as="a" onClick={() => new_saved_account() }>Saved Beneficiary</List.Item>
 
                     </List>
                 </>
@@ -110,10 +130,25 @@ export const DestinationModal = ({open, size, close}) => {
         }
 
     ]
+    const [updateaccount, {isLoading}] = useSaveAccountMutation()
+    let accountnumber = acctnum
+    const saveacct = [fname, lname, accountnumber].every(Boolean) && !isLoading
     const populateaccount = () => {
+        if(saveAccount){
+            if(saveacct){
+                updateaccount({fname, lname, accountnumber}).unwrap()
+            }
+        }
         dispatch_reducer(updateToAccount(
-            acctnum
+            acctnum,
+            fname,
+            lname,
+            acctId,
+            accountbal
         ))
+        dispatch({type: 'close'})
+    }
+    const closeModal = () => {
         dispatch({type: 'close'})
     }
     return(
@@ -161,7 +196,11 @@ export const DestinationModal = ({open, size, close}) => {
                         <span>{fname}</span><span>{lname}</span> <br/>
                         {accountno} | Swift
                     </Segment>
-                    
+                    <Checkbox 
+                        label="Save Account Number"
+                        value={saveAccount}
+                        onChange={(e, {value}) => setSaveAccount(true)} 
+                    />
                   
                     <Header textAlign="left" as="h3" content="Is this the person?" />
                     <Button 
@@ -195,11 +234,16 @@ export const DestinationModal = ({open, size, close}) => {
                 Destination To
             </Modal.Header>
         </Modal>
+        <SavedAccounts 
+            open={open_saved_account} 
+            size={size_saved_account}
+            close={closeModal}
+        
+        />
         
         </>
         
     )
 } 
-
 
 

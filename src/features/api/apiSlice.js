@@ -23,6 +23,26 @@ export const apiSlice = createApi({
                 method: 'POST',
                 body: initialPost
             })
+        }),
+        editAccount: builder.mutation({
+            query: account => ({
+                url: `/users/${account.id}/`,
+                method: 'PATCH',
+                body: account
+            })
+        }),
+        getTransferHistory: builder.query({
+            query: () => 'transferhistorys'
+        }),
+        saveAccount: builder.mutation({
+            query: initialPost => ({
+                url: 'saveaccounts/',
+                method: 'POST',
+                body: initialPost
+            })
+        }),
+        getSavedAccount: builder.query({
+            query: () => 'saveaccounts'
         })
     })
 })
@@ -30,5 +50,11 @@ export const apiSlice = createApi({
 export const {
             useRegisterMutation,
             useGetusersQuery,
-            useLocalTransferMutation
+            useLocalTransferMutation,
+            useEditAccountMutation,
+            useGetTransferHistoryQuery,
+            useSaveAccountMutation,
+            useGetSavedAccountQuery
+        
+            
         } = apiSlice

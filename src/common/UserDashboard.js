@@ -6,12 +6,18 @@ import { useGetusersQuery } from "../features/api/apiSlice"
 import { SendMoneyModal } from "./SendMoneyModal"
 import { Footer } from "../desktop/Footer"
 import { AccountSetting } from "./AccountSetting"
+import { HistoryModal } from "./HistoryModal"
+import { Faq } from "./Faq"
 
 const initialState ={
     open: false,
     size: undefined,
     open_account_setting: false,
     size_account_setting: undefined,
+    open_history: false,
+    size_history: undefined,
+    open_faq: false,
+    size_faq: undefined,
     loading: false
 }
 
@@ -21,8 +27,12 @@ function modalReducer(state, action){
             return {open: true, size: action.size}
         case 'account_setting':
             return {open_account_setting: true, size_account_setting: action.size_account_setting}
+        case 'open_history':
+            return {open_history: true, size_history: action.size_history}
+        case 'open_faq':
+            return {open_faq: true, size: action.size_faq}
         case 'close':
-                return {open: false, open_account_setting: false}
+                return {open: false, open_account_setting: false, open_history: false, open_faq: false}
         default:
             return new Error("action not available")
     }
@@ -32,6 +42,8 @@ export const UserDashboard = () => {
     const [state, dispatch] = useReducer(modalReducer, initialState)
     const {open, size, 
             open_account_setting, size_account_setting, 
+            open_history, size_history,
+            open_faq, size_faq,
             loading} = state
 
     const closeModal = () => {
@@ -155,16 +167,16 @@ export const UserDashboard = () => {
                                         
                                     </Grid.Column>
                                     <Grid.Column mobile={8} computer={4} textAlign="center">
-                                        <Segment tertiary raised inverted color="green" secondary>
+                                        <Segment onClick= {() => dispatch({type: 'open_history', size_history: 'tiny'})} tertiary raised inverted color="green" secondary>
                                             <Header as="h3" icon>
-                                                <Icon circular inverted color="green" name="credit card" />
-                                                Card
+                                                <Icon circular inverted color="green" name="history" />
+                                                History
                                             </Header>
                                         </Segment>
                                         
                                     </Grid.Column>
                                     <Grid.Column mobile={8} computer={4} textAlign="center">
-                                        <Segment tertiary raised inverted color="green" secondary>
+                                        <Segment onClick= {() => dispatch({type: 'open_faq', size_faq: 'tiny'})} tertiary raised inverted color="green" secondary>
                                             <Header as="h3" icon>
                                                 <Icon circular inverted color="green" name="question" />
                                                 Faq
@@ -184,6 +196,8 @@ export const UserDashboard = () => {
         
         <SendMoneyModal open={open} size={size} close={closeModal} />
         <AccountSetting open={open_account_setting} size={size_account_setting} close={closeModal} />
+        <HistoryModal open={open_history} size={size_history} close={closeModal} />
+        <Faq open={open_faq} size={size_faq} close={closeModal} />
         </Segment>
         <Footer />
         </>

@@ -2,9 +2,11 @@ import { useState } from "react"
 import { Container, Grid, Header, Segment, Form, Icon, Input, Modal, Button, Checkbox, List, Table, Accordion } from "semantic-ui-react"
 import { UserNavbar } from "./UserNavbar"
 import { useReducer } from "react"
-import { useGetusersQuery, useLocalTransferMutation } from "../features/api/apiSlice"
+import { useEditAccountMutation, useGetusersQuery, useLocalTransferMutation } from "../features/api/apiSlice"
 import { DestinationModal } from "./DestinationModal"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { updateTransaction } from "../features/api/accountSlice"
 
 const initialState = {
     open: false,
@@ -38,6 +40,13 @@ export const LocalTransfer = () => {
     const accountNo = useSelector((state) => state.accounts.accountNo)
     const [accountNoError, setaccountError] = useState(false)
 
+    const to_fname = useSelector((state) => state.accounts.to_fname)
+    const to_lname = useSelector((state) => state.accounts.to_lname)
+    const to_acctId = useSelector((state) => state.accounts.to_acctId)
+    const to_accountbal = useSelector((state) => state.accounts.to_accountbal)
+
+    const navigate = useNavigate()
+
     const [state, dispatch] = useReducer(modalReducer, initialState)
     const {open, size, open_destination, size_destination, open_success, size_success} = state
    
@@ -57,6 +66,7 @@ export const LocalTransfer = () => {
     let accountbal = ''
     let fname = ''
     let lname = ''
+    let userId = ''
     if(isSuccess){
         const user = users.find(u => u.email === sessionStorage.getItem("emailId"))
         if(user){
@@ -65,6 +75,7 @@ export const LocalTransfer = () => {
             accountbal  = user.accountbal
             fname = user.fname
             lname = user.lname
+            userId = user.id
         }
     }
     const addAccount = () => {
@@ -73,21 +84,33 @@ export const LocalTransfer = () => {
     }
     const closeModal = () => {
         dispatch({type: 'close'})
-    }  
+    } 
+
 
     const [addtransaction, {isLoading}] = useLocalTransferMutation()
-    const saveTransaction = [amount, account, accounttype, accountbal, fname, lname, accountNo, remark].every(Boolean) && !isLoading
+    const saveTransaction = [amount, account, fname, lname, accountNo, remark, to_fname, to_lname].every(Boolean) && !isLoading
    
+    const [updateAccount] = useEditAccountMutation()
+
     const sendMoney = async () => {
         if(accountInformation === ''){
             setaccountInformationError({content: 'Empty Field'})
         }else if(accountNo === ''){
             setaccountError({content: 'Empty Field'})
+        }else if(amount > accountbal){
+            alert("Insufficient Funds")
         }else{
             if(saveTransaction){
                 setloading(true)
-                try{
-                    await addtransaction({amount, account, accounttype, accountbal, fname, lname, accountNo, remark}).unwrap()
+                try{               
+                    accountbal -= amount
+                    await updateAccount({id:userId, accountbal})
+
+                    accountbal = 0
+                    accountbal = parseInt(to_accountbal) + parseInt(amount)
+                    await updateAccount({id: to_acctId, accountbal})
+                  
+                    await addtransaction({amount, account, fname, lname, accountNo, remark, to_fname, to_lname}).unwrap()
                     setloading(false)
                     setAmount('')
                     account = ''
@@ -102,8 +125,6 @@ export const LocalTransfer = () => {
                     console.log("An Error has occured", error)
                 }
             }
-           
-
         }
     }
 
@@ -113,6 +134,12 @@ export const LocalTransfer = () => {
              <Segment vertical style = {{padding: '3em 0em', backgroundColor: '#F6F6F6'}}>
                 <Container>
                     <Grid textAlign="center">
+                        <Grid.Row>
+                            <Grid.Column textAlign="left">
+                                <Icon link onClick={() => navigate('/user-dashboard')} size="large" name="long arrow alternate left" />
+                                <span>Back</span>
+                            </Grid.Column>
+                        </Grid.Row>
                         <Grid.Row>
                             <Grid.Column style={{textAlign: 'center', maxWidth: 600, textAlign: 'left'}}>
                             <Segment inverted tertiary raised secondary color="green" style = {{padding: '2em 2em'}}>
@@ -151,7 +178,7 @@ export const LocalTransfer = () => {
                                         <label>To:</label>
                                         <Input 
                                              onClick = {() => dispatch({type: 'open_destination', size_destination: 'mini'})}
-                                            value = {accountNo}
+                                            value = {accountNo + '  ' + to_fname + '  ' +  to_lname}
                                             error={accountNoError}
                                         />
                                     </Form.Field>
@@ -195,7 +222,7 @@ export const LocalTransfer = () => {
                                     
                                         <Segment fluid raised inverted secondary tertiary color="green">
                                             <Header as="h3" icon>
-                                                <Icon circular inverted color="green" name="sign in" />
+                                                <Icon circular inverted color="green" name="checkmark" />
                                                 Transfer Successfull
                                             </Header>
                                         </Segment>
@@ -207,7 +234,12 @@ export const LocalTransfer = () => {
                                     <Button 
                                         fluid circular size="large" 
                                         color="youtube"
-                                        onClick={() => dispatch({type: 'close'}) }
+                                        onClick={
+                                            () => {
+                                                dispatch({type: 'close'})
+                                                navigate('/user-dashboard')
+                                            }
+                                        }
                                     >
                                         Close
                                     </Button>

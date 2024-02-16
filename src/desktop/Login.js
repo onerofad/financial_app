@@ -21,11 +21,15 @@ export const Login = ({mobile}) => {
     const {data: users, isSuccess} = useGetusersQuery()
     let count = 0 
     let email = ''
+    let accno = ''
+    let acctype = ''
     if(isSuccess){
         users.map(user => {
             if(user.username === username && user.password === password){
                 ++count
                 email = user.email
+                accno = user.accountnumber
+                acctype = user.accountype
             }
         })
     }
@@ -41,6 +45,8 @@ export const Login = ({mobile}) => {
             setTimeout(() => {
                 sessionStorage.setItem("userId", username)
                 sessionStorage.setItem("emailId", email)
+                sessionStorage.setItem("accId", accno)
+                sessionStorage.setItem("acctype", acctype)
                 navigate("/user-dashboard")
             }, 300)
         }
